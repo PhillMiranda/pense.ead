@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="links">
                         <ul class="icones-sociais">
                             <li class="facebook">
-                                <a href="https://www.facebook.com/phillmiranda" target="_blank">
+                                <a href="https://www.facebook.com/phillip.silva.1690/" target="_blank">
                                     <i class="fa fa-facebook-official" aria-hidden="true"></i>
                                 </a>
                             </li>
