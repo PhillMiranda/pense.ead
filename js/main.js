@@ -39,3 +39,13 @@ $(document).ready(function () {
     }
     startListeners();
 });
+
+// Inicializa o menu lateral (Mobile)
+$(document).ready(function(){
+    $(".button-collapse").sideNav({
+        menuWidth: 250, // Largura do menu
+        edge: 'left', // Abre da esquerda
+        closeOnClick: true, // Fecha ao clicar em um link
+        draggable: true // Permite arrastar para abrir
+    });
+});

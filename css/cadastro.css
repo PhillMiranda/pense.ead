@@ -299,72 +299,6 @@
   transform: translateX(-5px);
 }
 
-/* ======================================== RESPONSIVIDADE ======================================== */
-
-@media (max-width: 1024px) {
-  .cadastro-content {
-    flex-direction: column;
-    padding: 1.5rem;
-  }
-
-  .cadastro-info {
-    max-width: 100%;
-    text-align: center;
-  }
-
-  .titulo-destaque {
-    font-size: 2.5rem;
-  }
-
-  .logo-cadastro {
-    max-width: 200px;
-  }
-}
-
-@media (max-width: 768px) {
-  .titulo-destaque {
-    font-size: 2rem;
-  }
-
-  .descricao-cadastro {
-    font-size: 1.1rem;
-  }
-
-  .subtitulo {
-    font-size: 1.5rem;
-  }
-
-  .lista-beneficios li {
-    font-size: 1rem;
-  }
-
-  .form-card {
-    padding: 1.5rem;
-  }
-
-  .btn-group {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 480px) {
-  .cadastro-content {
-    padding: 1rem;
-  }
-
-  .titulo-destaque {
-    font-size: 1.5rem;
-  }
-
-  .form-card {
-    padding: 1.2rem;
-  }
-
-  .form-card h2 {
-    font-size: 1.5rem;
-  }
-}
-
 /* Efeitos extras */
 .backgroundPhill {
   background-size: cover;
@@ -375,6 +309,74 @@
   transform: scaleX(-1);
 }
 
-body.penseead {
-    overflow: hidden; 
+/* ======================================== RESPONSIVIDADE ======================================== */
+
+/* Tablets e Celulares (Abaixo de 992px) */
+@media (max-width: 992px) {
+    .cadastro-content {
+      flex-direction: column; /* Empilha: Texto em cima, Form embaixo */
+      gap: 2rem; /* Espaço menor entre eles */
+      height: auto; /* Remove altura fixa de 100vh para permitir rolagem */
+      min-height: 100vh;
+      padding: 3rem 1.5rem; /* Mais espaço nas bordas */
+      justify-content: flex-start; /* Começa do topo */
+    }
+  
+    /* No celular, PRECISAMOS de rolagem, senão corta o botão */
+    body.penseead {
+      overflow-y: auto !important; 
+      overflow-x: hidden;
+    }
+  
+    .cadastro-info {
+      max-width: 100%;
+      text-align: center;
+      margin-bottom: 0;
+    }
+  
+    .logo-container {
+      margin-bottom: 1rem;
+    }
+  
+    /* Diminuir textos para caber melhor */
+    .titulo-destaque {
+      font-size: 1.8rem; 
+    }
+  
+    .descricao-cadastro {
+      font-size: 1rem;
+      padding: 0.8rem;
+    }
+  
+    /* Ajuste do cartão do formulário */
+    .form-card {
+      padding: 1.5rem;
+      max-width: 100%; /* Ocupa a largura disponível */
+    }
+    
+    .btn-group {
+      flex-direction: column; /* Botões um embaixo do outro no mobile */
+    }
+  }
+  
+  /* Celulares Pequenos (Abaixo de 480px) */
+  @media (max-width: 480px) {
+    .cadastro-content {
+      padding: 1.5rem 1rem;
+    }
+  
+    .titulo-destaque {
+      font-size: 1.5rem;
+    }
+    
+    .form-card h2 {
+      font-size: 1.4rem;
+    }
+  }
+  
+  /* Desktop apenas (Trava a rolagem só se a tela for grande) */
+  @media (min-width: 993px) {
+    body.penseead {
+      overflow: hidden; 
+    }
   }

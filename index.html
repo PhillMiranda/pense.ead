@@ -30,49 +30,34 @@
     <header class="left page-header">
         <div class="navbar-fixed">
             <nav class="menu" role="navigation">
-
                 <div class="nav-wrapper ">
-
                     <a href="/" class="brand-logo">
                         <img src="/img/identidade_visual/pense.ead - Logo.svg"
                             class="logo" alt="pense.ead"
                             title="pense.ead">
                     </a>
-
-
-                    <a href="#" data-activates="mobile-menu" class="button-collapse"><i
-                            class="material-icons">menu</i></a>
+                    <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
 
                     <ul class="right hide-on-med-and-down menu-content">
+                        <li class=""><a href="/index.html">Página inicial</a></li>
                         <li class="active">
-                            <a href="/">Página inicial</a>
-                        </li>
-
-                        <li class="">
                             <a class='dropdown-button' href="/pages/cursos.html" data-beloworigin="true"
-                                data-activates="dropdown-categorias" data-constrainwidth="false" data-hover="true">
-                                Cursos
-                            </a>
+                                data-activates="dropdown-categorias" data-constrainwidth="false" data-hover="true">Cursos</a>
                         </li>
+                        <li class="login"><a href="/login">Login</a></li>
+                        <li class="register"><a href="/pages/cadastro.html">Cadastre-se</a></li>
+                    </ul>
 
-                        <li class="login">
-                            <a href="/login" title="Login" alt="Login">
-                                Login
-                            </a>
-                        </li>
-                        <li class="register">
-                            <a href="/pages/cadastro.html" title="Cadastre-se" alt="Cadastre-se">
-                                Cadastre-se
-                            </a>
-                        </li>
+                    <ul class="side-nav" id="mobile-menu">
+                        <li><a href="/">Página inicial</a></li>
+                        <li class="active"><a href="/pages/cursos.html">Cursos</a></li>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/pages/cadastro.html">Cadastre-se</a></li>
                     </ul>
                 </div>
             </nav>
         </div>
-
-        <div class="header-container container">
-        </div>
-
+        <div class="header-container container"></div>
     </header>
 
     <section id="content" class="content-container public-home">
@@ -185,57 +170,6 @@
             </div>
         </section>
     </section>
-
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-        ga('create', 'UA-69282175-1', 'auto');
-        ga('create', 'UA-56083812-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-
-    <noscript>
-        <iframe src="//www.googletagmanager.com/ns.html?id=GTM-WQR4V2R" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
-    <script>(function (w, d, s, l, i) {
-            w[l] = w[l] || []; w[l].push({
-                'gtm.start':
-                    new Date().getTime(), event: 'gtm.js'
-            }); var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                    '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-WQR4V2R');</script>
-
-
-    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = "//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); } }(document, "script", "twitter-wjs");</script>
-    <div id="fb-root"></div>
-    <script>
-        window.fbAsyncInit = function () {
-            // init the FB JS SDK
-            FB.init({
-                status: true, // check the login status upon init?
-                cookie: true, // set sessions cookies to allow your server to access the session?
-                xfbml: true  // parse XFBML tags on this page?
-            });
-
-            // Additional initialization code such as adding Event Listeners goes here
-
-        };
-
-        // Load the SDK's source Asynchronously
-        (function (d, debug) {
-            var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-            if (d.getElementById(id)) { return; }
-            js = d.createElement('script'); js.id = id; js.async = true;
-            js.src = "//connect.facebook.net/<%= current_saas.locale.gsub('-','_') || 'en_US' %>/all" + (debug ? "/debug" : "") + ".js";
-            ref.parentNode.insertBefore(js, ref);
-        }(document, /*debug*/ false));
-    </script>
 
     <script src="js/main.js"></script>
     <script src="js/depoimentos.js"></script>
