@@ -38,11 +38,11 @@
 .cadastro-content {
     display: flex;
     align-items: center;
-    justify-content: center; /* ISSO junta os elementos no centro */
-    height: 100vh; /* Garante que ocupe a tela toda sem sobrar */
+    justify-content: center; 
+    height: 100vh; 
     width: 100%;
-    padding: 0 2rem; /* Remove padding vertical para ganhar altura */
-    gap: 6rem; /* Distância entre o formulário e o texto. Aumente ou diminua aqui */
+    padding: 0 2rem; 
+    gap: 6rem; 
     box-sizing: border-box;
   }
 
