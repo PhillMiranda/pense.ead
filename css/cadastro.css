@@ -1,0 +1,380 @@
+/* ======================================== CADASTRO - ESTILOS ESPECÍFICOS Usa as variáveis do style.css principal ======================================== */
+
+/* Container principal do cadastro */
+.cadastro-wrapper {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color, #466fd9) 0%,
+    var(--secondary-color, #2c4a9e) 100%
+  );
+}
+
+/* Telas do cadastro */
+.cadastro-screen {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform: translateX(100%);
+}
+
+.cadastro-screen.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  position: relative;
+}
+
+.cadastro-screen.exit-left {
+  transform: translateX(-100%);
+}
+
+/* Conteúdo das telas */
+.cadastro-content {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* ISSO junta os elementos no centro */
+    height: 100vh; /* Garante que ocupe a tela toda sem sobrar */
+    width: 100%;
+    padding: 0 2rem; /* Remove padding vertical para ganhar altura */
+    gap: 6rem; /* Distância entre o formulário e o texto. Aumente ou diminua aqui */
+    box-sizing: border-box;
+  }
+
+/* Área de informações */
+.cadastro-info {
+  flex: 1;
+  color: #fff;
+  max-width: 500px;
+}
+
+.logo-container {
+  margin-bottom: 2rem;
+  align-items: ;
+}
+
+.logo-cadastro {
+  max-width: 250px;
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+
+.titulo-destaque {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.titulo-destaque .highlight {
+  background-color: #ffc400;
+  color: #000;
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.descricao-cadastro {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: var(--primary-color, #466fd9);
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.subtitulo {
+  font-size: 0.5rem;
+  margin-top: -28px;
+  margin-bottom: 0;
+  font-weight: 300;
+  color: var(--background-color, #fff);
+}
+
+.lista-beneficios {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+}
+
+.lista-beneficios li {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.lista-beneficios i {
+  color: #ffc400;
+  font-size: 1.4rem;
+}
+
+/* Container do formulário */
+.cadastro-form-container {
+  flex: 1;
+  display: contents;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-card {
+    background: #fff;
+    padding: 2rem; 
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px; 
+    animation: slideInUp 0.6s ease-out;
+  }
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-card h2 {
+    color: var(--primary-color, #466fd9);
+    font-size: 1.5rem; /* ERA: 2rem. Estava muito agressivo */
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 700;
+  }
+
+/* Grupos de formulário */
+.form-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.form-group i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #757575;
+    font-size: 1rem; /* ERA: 1.2rem. Ícone levemente menor */
+    z-index: 1;
+  }
+
+.form-group input {
+    width: 100%;
+    padding: 0.7rem 1rem 0.7rem 2.8rem; 
+    font-size: 0.95rem; /* Leve diminuição na fonte */
+    border: 2px solid #e0e0e0;
+    border-radius: 8px; /* Raio um pouco menor para combinar */
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #f5f5f5;
+    height: auto; /* Garante que não herde altura fixa de frameworks */
+    box-sizing: border-box; /* Garante que o padding não estoure a largura */
+  }
+
+.form-group input:focus {
+  border-color: var(--primary-color, #466fd9);
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(70, 111, 217, 0.1);
+}
+
+.form-group input:read-only {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+  color: #6c757d;
+}
+
+/* Mensagens de erro */
+.erro-mensagem {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: -0.8rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  display: none;
+  animation: shake 0.3s ease;
+}
+
+.erro-mensagem.show {
+  display: block;
+  background-color: #ffe6e6;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+/* Botões */
+.btn-primary,
+.btn-secondary {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color, #466fd9) 0%,
+    var(--secondary-color, #2c4a9e) 100%
+  );
+  color: #fff;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(70, 111, 217, 0.4);
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+}
+
+.btn-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-group button {
+  flex: 1;
+}
+
+/* Link de voltar */
+.link-voltar {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.link-voltar a {
+  color: var(--primary-color, #466fd9);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.link-voltar a:hover {
+  color: var(--secondary-color, #2c4a9e);
+  transform: translateX(-5px);
+}
+
+/* ======================================== RESPONSIVIDADE ======================================== */
+
+@media (max-width: 1024px) {
+  .cadastro-content {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .cadastro-info {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .titulo-destaque {
+    font-size: 2.5rem;
+  }
+
+  .logo-cadastro {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .titulo-destaque {
+    font-size: 2rem;
+  }
+
+  .descricao-cadastro {
+    font-size: 1.1rem;
+  }
+
+  .subtitulo {
+    font-size: 1.5rem;
+  }
+
+  .lista-beneficios li {
+    font-size: 1rem;
+  }
+
+  .form-card {
+    padding: 1.5rem;
+  }
+
+  .btn-group {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .cadastro-content {
+    padding: 1rem;
+  }
+
+  .titulo-destaque {
+    font-size: 1.5rem;
+  }
+
+  .form-card {
+    padding: 1.2rem;
+  }
+
+  .form-card h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Efeitos extras */
+.backgroundPhill {
+  background-size: cover;
+  background-position: center;
+  background-color: var(--primary-color);
+}
+.InvertePhill {
+  transform: scaleX(-1);
+}
+
+body.penseead {
+    overflow: hidden; 
+  }

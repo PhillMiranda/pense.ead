@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Pense.EAD</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/cadastro.css">    
+
+    <link rel="shortcut icon" type="image/x-icon" href="/img/identidade_visual/icone_penseead.svg" />
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="penseead">
+    <div id="container" class="container backgroundPhill">
+
+          <!-- TELA 1: Validação do Código -->
+    <div class="cadastro-screen screen-validacao active">
+        <div class="cadastro-content">
+            <!-- Lado Esquerdo: Informações -->
+            <div class="cadastro-info">
+                <div class="logo-container">
+                    <img src="/img/identidade_visual/icone_penseead.svg" alt="Pense.EAD" class="logo-cadastro">
+                </div>
+                <h5 class="titulo-destaque">
+                    Esta é a sua <span class="highlight">primeira vez</span> aqui?
+                </h5>
+                <p class="descricao-cadastro">
+                    O portal <strong>Pense.EAD</strong> é uma plataforma exclusiva 
+                    para desenvolvimento profissional e acadêmico.
+                </p>
+            </div>
+
+            <!-- Lado Direito: Formulário de Validação -->
+            <div class="cadastro-form-container">
+                <div class="form-card">
+                    <h2>Validar login</h2>
+                    <form id="form-validacao">
+                        <div class="form-group">
+                            <i class="fas fa-key"></i>
+                            <input 
+                                type="text" 
+                                id="cpf-cliente" 
+                                placeholder="Informe seu CPF"
+                                autocomplete="off"
+                                required
+                            >
+                        </div>
+                        <div id="erro-validacao" class="erro-mensagem"></div>
+
+                        <button type="submit" class="btn-primary">
+                            <span>Confirmar</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+
+                    <div class="link-voltar">
+                        <a href="../index.html">
+                            <i class="fas fa-arrow-left"></i> Voltar para a página inicial?
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TELA 2: Confirmação e Cadastro -->
+    <div class="cadastro-screen screen-confirmacao">
+        <div class="cadastro-content">
+            <!-- Lado Esquerdo: Formulário de Cadastro -->
+            <div class="cadastro-form-container">
+                <div class="form-card">
+                    <h2>Confirma os dados?</h2>
+                    <form id="form-cadastro">
+                        <!-- Dados da Empresa (readonly) -->
+                        <div class="form-group">
+                            <i class="fas fa-id-card"></i>
+                            <input 
+                                type="text" 
+                                id="cpf-confirmacao" 
+                                placeholder="Código"
+                                readonly
+                            >
+                        </div>
+
+                        <!-- Dados do Usuário -->
+                        <div class="form-group">
+                            <i class="fas fa-user"></i>
+                            <input 
+                                type="text" 
+                                id="nome-usuario" 
+                                placeholder="Seu Nome Completo"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <i class="fas fa-envelope"></i>
+                            <input 
+                                type="email" 
+                                id="email-usuario" 
+                                placeholder="Seu E-mail"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <i class="fas fa-lock"></i>
+                            <input 
+                                type="password" 
+                                id="senha-usuario" 
+                                placeholder="Crie uma Senha (mín. 6 caracteres)"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <i class="fas fa-lock"></i>
+                            <input 
+                                type="password" 
+                                id="senha-confirmacao" 
+                                placeholder="Confirme a Senha"
+                                required
+                            >
+                        </div>
+
+                        <div id="erro-cadastro" class="erro-mensagem"></div>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn-secondary" id="btn-voltar">
+                                <i class="fas fa-arrow-left"></i>
+                                <span>Voltar</span>
+                            </button>
+                            <button type="submit" class="btn-primary">
+                                <span>Cadastrar</span>
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Lado Direito: Informações -->
+            <div class="cadastro-info">
+                <div class="logo-container">
+                    <img src="/img/identidade_visual/pense.ead - Logo.png" alt="Pense.EAD" class="logo-cadastro">
+                </div>
+                <h2 class="titulo-destaque">Que tal se desenvolver?</h2>
+                <h3 class="subtitulo">Venha com a Pense.EAD e aprenda sem limites!</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Scripts do cadastro -->
+<script src="/js/cadastro-animacao.js"></script>
+<script src="/js/cadastro-validacao.js"></script>
+
+</body>
+</html>
