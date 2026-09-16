@@ -2,16 +2,14 @@ $(document).ready(function () {
     
     // 1. Dados dos Banners (Adicione novos objetos aqui)
     const banners = [
-        // Adicione banners aqui conforme necessário
-        // Exemplo:
-        // {
-        //     img: "/img/banner_principal/nome-do-banner.png",
-        //     alt: "Descrição do banner",
-        //     titulo: "",
-        //     texto: "",
-        //     botaoTexto: "Acesse aqui!",
-        //     botaoLink: "https://..."
-        // },
+        {
+            img: "/img/banner_principal/banner-penseead-principal.webp",
+            alt: "Sua nova e melhor escola digital — Estude como achar melhor.",
+            titulo: "",
+            texto: "",
+            botaoTexto: "",
+            botaoLink: ""
+        },
         // Exemplo de um segundo banner (pode remover ou editar)
         /*
         {
