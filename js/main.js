@@ -2,6 +2,11 @@ $(function () {
     $('.search-wrapper i.material-icons').click(function () {
         $(this).parents('form').submit();
     });
+
+    // Menu hambúrguer (mobile): o Materialize 0.100.2 exige a inicialização
+    // manual do plugin sideNav para o clique no ícone realmente abrir o
+    // menu lateral — sem isso o botão fica sem nenhum listener.
+    $('.button-collapse').sideNav();
 });
 
 // Execução de lazyload
@@ -38,14 +43,4 @@ $(document).ready(function () {
         }
     }
     startListeners();
-});
-
-// Inicializa o menu lateral (Mobile)
-$(document).ready(function(){
-    $(".button-collapse").sideNav({
-        menuWidth: 250, // Largura do menu
-        edge: 'left', // Abre da esquerda
-        closeOnClick: true, // Fecha ao clicar em um link
-        draggable: true // Permite arrastar para abrir
-    });
 });

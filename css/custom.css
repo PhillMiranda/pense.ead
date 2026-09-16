@@ -1,3 +1,751 @@
 .slider::after {
     content: "FutureEAD";
 }
+
+/* =========================================================
+   Sidebar de categorias (pages/cursos.html) — redesign
+   Usamos o #list-categories (ID) para ter especificidade maior
+   que as regras equivalentes do global.css, sem precisar mexer
+   na ordem de import dos CSS no <head>.
+   ========================================================= */
+#list-categories {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #eef0f5;
+  overflow: hidden;
+  padding: 6px 0 12px;
+}
+
+#list-categories .collection-header {
+  padding: 18px 20px 10px;
+  border: 0;
+}
+
+#list-categories .collection-header h6 {
+  margin: 0;
+  color: var(--primary-color);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-align: left !important;
+}
+
+#list-categories .collection-item {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px !important;
+  margin: 2px 8px;
+  border-radius: 10px;
+  border: 0 !important;
+  text-align: left !important;
+  color: #4a4f5c;
+  font-size: 0.95rem !important;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+#list-categories .collection-item .material-icons {
+  font-size: 20px;
+  color: var(--secondary-color);
+  transition: color 0.15s ease;
+}
+
+#list-categories .collection-item:hover {
+  background-color: #f0f3ff !important;
+  color: var(--primary-color-dark) !important;
+}
+
+#list-categories .collection-item.active {
+  background-color: var(--primary-color-light) !important;
+  color: #fff !important;
+}
+
+#list-categories .collection-item.active .material-icons {
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  #list-categories {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    margin-bottom: 16px;
+  }
+}
+
+/* =========================================================
+   Banner de cookies (js/cookieConsent.js)
+   ========================================================= */
+.cookie-consent {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: 400px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: 0 12px 32px rgba(5, 10, 48, 0.18);
+  border: 1px solid rgba(5, 10, 48, 0.06);
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+}
+
+.cookie-consent--visivel {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.cookie-consent--saindo {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.cookie-consent__icone {
+  font-size: 26px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.cookie-consent__conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cookie-consent__texto strong {
+  display: block;
+  color: var(--primary-color);
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.cookie-consent__texto p {
+  margin: 0;
+  font-size: 0.85rem !important;
+  line-height: 1.45;
+  color: #5a5f6b;
+}
+
+.cookie-consent__acoes {
+  display: flex;
+  gap: 10px;
+}
+
+.cookie-consent__btn {
+  border: none;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease, background-color 0.15s ease;
+}
+
+.cookie-consent__btn:active {
+  transform: scale(0.97);
+}
+
+.cookie-consent__btn--aceitar {
+  background: var(--primary-color-light);
+  color: #fff;
+}
+
+.cookie-consent__btn--aceitar:hover {
+  opacity: 0.9;
+}
+
+.cookie-consent__btn--recusar {
+  background: transparent;
+  color: var(--primary-color);
+  border: 1px solid #d8dae6;
+}
+
+.cookie-consent__btn--recusar:hover {
+  background-color: #f4f5fa;
+}
+
+@media (max-width: 600px) {
+  .cookie-consent {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    max-width: none;
+    flex-direction: column;
+  }
+
+  .cookie-consent__acoes {
+    width: 100%;
+  }
+
+  .cookie-consent__btn {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+/* =========================================================
+   Menu hambúrguer (mobile) — Materialize sideNav
+   O global.css já estiliza o painel (ul.side-nav), mas o overlay escuro
+   estava com z-index: 0 !important, o que o jogava para trás do conteúdo
+   da página (e, dependendo da rolagem, chegava a bloquear cliques em vez
+   de fechar o menu). Aqui devolvemos uma pilha de camadas coerente: menu
+   lateral acima do overlay, overlay acima do resto da página, e ambos
+   abaixo do modal de login/cadastro (z-index 10000).
+   ========================================================= */
+#sidenav-overlay {
+  z-index: 9998 !important;
+}
+
+.penseead .page-header .navbar-fixed .menu .nav-wrapper ul.side-nav {
+  z-index: 9999;
+}
+
+/* =========================================================
+   Modal de login/cadastro — ícone de conta no menu
+   Reproduz fielmente o modelo "paisagem" que o Phill aprovou (gerado com
+   Gemini): painel escuro fixo que desliza de um lado para o outro
+   (só ele se move — os dois formulários ficam parados, cada um no seu
+   lado, e alternam com fade), com texto do painel mudando via JS. Aqui só
+   trocamos as cores/fonte pelas da identidade do site (css/global.css:root
+   e Titillium Web, já global) e a logo pela marca do pense.ead. O botão de
+   fechar fica fixo no canto do card, acima de tudo, então funciona igual
+   nos dois modos.
+   ========================================================= */
+.botao-conta,
+.botao-tema {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+/* O Materialize aplica um "button:focus { background-color: teal }" global
+   (o mesmo problema já corrigido no modal de login/cadastro) — sem isso
+   esses dois botões do menu ficavam com um flash verde-água ao serem
+   clicados, até o usuário focar em outro elemento. */
+.botao-conta:focus,
+.botao-tema:focus {
+  background: none !important;
+  outline: none;
+}
+
+.botao-conta .material-icons,
+.botao-tema .material-icons {
+  font-size: 28px;
+}
+
+/* No menu mobile (side-nav) os botões viram uma linha inteira, então o
+   ícone fica um pouco menor para ficar do tamanho dos links ao lado. */
+.side-nav .botao-conta .material-icons,
+.side-nav .botao-tema .material-icons {
+  font-size: 22px;
+  margin-right: 8px;
+}
+
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 10, 48, 0.55);
+  padding: 20px;
+}
+
+.auth-overlay.auth-overlay--aberto {
+  display: flex;
+}
+
+.auth-card {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 880px;
+  height: 580px;
+  max-height: 100%;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(5, 10, 48, 0.45);
+  overflow: hidden;
+}
+
+/* Botão de fechar fixo no card (não no painel nem no formulário), com
+   z-index acima de tudo — por isso continua no mesmo lugar e clicável
+   tanto no login quanto no cadastro. */
+.auth-fechar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 30;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  color: var(--primary-color, #050a30);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.auth-fechar:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.auth-fechar .material-icons {
+  font-size: 17px;
+}
+
+/* O Materialize aplica um "button:focus { background-color: teal }" global,
+   que deixava os botões do modal com um flash verde-água ao serem clicados
+   (o :focus fica ativo até o usuário clicar em outro lugar). Resetamos o
+   background/outline no :focus de cada botão para manter a cor da marca. */
+.auth-fechar:focus {
+  background: rgba(255, 255, 255, 0.9) !important;
+  outline: none;
+}
+
+/* Painel escuro — é o único elemento que se move (translateX 0% <-> 100%,
+   aplicado via JS em authModal.js). Os dois formulários abaixo ficam
+   parados, cada um sempre no seu lado, e só alternam opacidade. */
+.auth-painel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  width: 50%;
+  height: 100%;
+  background: var(--primary-color, #050a30);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  text-align: center;
+  box-sizing: border-box;
+  box-shadow: 8px 0 30px rgba(5, 10, 48, 0.35);
+  transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.auth-painel-logo {
+  width: 76px;
+  height: 76px;
+  margin-bottom: 22px;
+  /* força a marca para branco, funciona independente das cores originais do SVG */
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
+}
+
+.auth-painel-titulo {
+  margin: 0 0 14px;
+  font-size: 1.7rem !important;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.auth-painel-texto {
+  margin: 0 0 28px;
+  color: #cbd5e1;
+  font-size: 0.9rem !important;
+  line-height: 1.6;
+}
+
+.auth-painel-botao {
+  padding: 12px 30px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem !important;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background-color 0.25s, color 0.25s;
+}
+
+.auth-painel-botao:hover {
+  background: #fff;
+  color: var(--primary-color, #050a30);
+}
+
+.auth-painel-botao:focus {
+  background: transparent !important;
+  color: #fff !important;
+  outline: none;
+}
+
+.auth-painel-botao:focus:hover {
+  background: #fff !important;
+  color: var(--primary-color, #050a30) !important;
+}
+
+/* Os dois formulários — cada um fixo no seu lado (login à direita, cadastro
+   à esquerda), alternando com fade enquanto o painel escuro desliza por
+   cima. Ver authModal.js para a lógica de opacity/pointer-events. */
+.auth-form-wrapper {
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px;
+  background: #fff;
+  transition: opacity 0.3s ease;
+}
+
+.auth-form-wrapper.login {
+  right: 0;
+}
+
+.auth-form-wrapper.cadastro {
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.auth-form-inner {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.auth-form-inner h2 {
+  margin: 0 0 6px;
+  color: var(--primary-color, #050a30);
+  font-size: 1.5rem !important;
+  font-weight: 700;
+}
+
+.auth-form-sub {
+  margin: 0 0 20px;
+  color: #64748b;
+  font-size: 0.8rem !important;
+}
+
+.auth-campo {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.auth-campo label {
+  display: block;
+  margin-bottom: 5px;
+  color: #475569;
+  font-size: 0.72rem !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* O Materialize (framework usado no resto do site) força um estilo próprio
+   de sublinhado em todo input[type=email/password/text], então aqui precisa
+   de !important para garantir a caixa completa, como no modelo. */
+.auth-campo input {
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 11px 14px !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 10px !important;
+  background: #f8fafc !important;
+  font-size: 0.9rem !important;
+  font-family: inherit !important;
+  outline: none !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s, background-color 0.2s !important;
+}
+
+.auth-campo input:focus {
+  border: 1px solid var(--primary-color-light, #233dff) !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(35, 61, 255, 0.15) !important;
+}
+
+.auth-senha-wrap {
+  position: relative;
+}
+
+.auth-senha-wrap input {
+  padding-right: 68px !important;
+}
+
+.auth-mostrar-senha {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  translate: 0 -50%;
+  padding: 4px 6px;
+  border: none;
+  background: none;
+  color: var(--secondary-color, #3a9bdc);
+  font: inherit;
+  font-size: 0.75rem !important;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.auth-mostrar-senha:hover {
+  color: var(--primary-color-light, #233dff);
+}
+
+.auth-mostrar-senha:focus {
+  background: none !important;
+  outline: none;
+}
+
+.auth-erro {
+  color: #d32f2f;
+  font-size: 0.78rem !important;
+  margin: 0 0 12px !important;
+}
+
+.auth-botao-principal {
+  width: 100%;
+  padding: 12px 0;
+  margin-top: 6px;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary-color-light, #233dff);
+  color: #fff;
+  font-size: 0.92rem !important;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(35, 61, 255, 0.3);
+  transition: background-color 0.2s;
+}
+
+.auth-botao-principal:hover {
+  background: var(--primary-color-dark, #12229d);
+}
+
+.auth-botao-principal:focus {
+  background: var(--primary-color-light, #233dff) !important;
+  outline: none;
+}
+
+.auth-botao-principal:focus:hover {
+  background: var(--primary-color-dark, #12229d) !important;
+}
+
+/* No mobile o layout lado a lado não cabe — o painel vira uma faixa fixa
+   no topo (mesmo conteúdo, mesmo botão de troca) e os formulários empilham
+   embaixo, ocupando a largura toda. */
+@media (max-width: 700px) {
+  .auth-card {
+    flex-direction: column;
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    max-height: none;
+    border-radius: 20px;
+  }
+
+  .auth-painel {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 32px 28px 26px;
+    box-shadow: none;
+    transform: none !important;
+  }
+
+  .auth-painel-logo {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 14px;
+  }
+
+  .auth-painel-titulo {
+    font-size: 1.35rem !important;
+  }
+
+  .auth-form-wrapper {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 26px 28px 30px;
+    display: none;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .auth-card:not(.cadastro-ativo) .auth-form-wrapper.login {
+    display: flex;
+  }
+
+  .auth-card.cadastro-ativo .auth-form-wrapper.cadastro {
+    display: flex;
+  }
+}
+
+/* =========================================================
+   Tema claro/escuro
+   Ativado via atributo data-theme="dark" na tag <html> (js/themeToggle.js,
+   que também lê/grava a escolha no localStorage). O tema claro continua
+   sendo o padrão do site — nada muda quando o atributo não está presente.
+   Aqui só criamos os overrides usados quando o escuro está ativo, mantendo
+   a marca: o header, o menu mobile e o rodapé já são azul-marinho nos dois
+   temas, então não precisam de ajuste.
+   ========================================================= */
+html[data-theme="dark"] {
+  --bg-pagina: #0b1120;
+  --bg-superficie: #141b2e;
+  --bg-superficie-2: #1c2540;
+  --texto-superficie: #e2e8f0;
+  --texto-superficie-suave: #94a3b8;
+  --borda-superficie: rgba(255, 255, 255, 0.08);
+  /* --text-color é usado por .conteudo/p em todo o site (global.css) —
+     redefinir aqui já clareia o texto corrido de qualquer seção. */
+  --text-color: #cbd5e1;
+}
+
+html[data-theme="dark"] body.penseead {
+  background-color: var(--bg-pagina) !important;
+}
+
+/* .titulo/.subtitulo usam var(--primary-color) direto (global.css), que
+   continua azul-marinho nos dois temas — preciso para o header/rodapé,
+   mas ilegível em fundo escuro fora deles. */
+html[data-theme="dark"] .titulo,
+html[data-theme="dark"] .subtitulo,
+html[data-theme="dark"] .courses .course .card .card-content h1,
+html[data-theme="dark"] .courses .course .card .card-content h2,
+html[data-theme="dark"] .courses .course .card .card-content h3,
+html[data-theme="dark"] .courses .course .card .card-content h4,
+html[data-theme="dark"] .courses .course .card .card-content h5 {
+  color: var(--texto-superficie) !important;
+}
+
+/* Zebra sutil entre seções da home (era var(--background-color), quase
+   branco nos dois temas — aqui ganha a superfície escura). */
+html[data-theme="dark"] .penseead section.public-home section:nth-child(odd) {
+  background-color: var(--bg-superficie) !important;
+}
+
+/* Cartões de curso, categorias, banner de cookies e a faixa branca do
+   rodapé — tudo o que era um "cartão branco" no tema claro. */
+html[data-theme="dark"] .courses .course .card,
+html[data-theme="dark"] #list-categories,
+html[data-theme="dark"] .cookie-consent,
+html[data-theme="dark"] .penseead footer.page-footer .logo-placeholder {
+  background-color: var(--bg-superficie) !important;
+}
+
+html[data-theme="dark"] .courses .course .card .card-action .price-container .preco-antigo,
+html[data-theme="dark"] .courses .course .card .card-action .price-container .preco-curso small {
+  color: var(--texto-superficie-suave) !important;
+}
+
+html[data-theme="dark"] #list-categories {
+  border-color: var(--borda-superficie);
+}
+
+html[data-theme="dark"] #list-categories .collection-header h6 {
+  color: var(--texto-superficie);
+}
+
+html[data-theme="dark"] #list-categories .collection-item {
+  color: var(--texto-superficie-suave);
+}
+
+html[data-theme="dark"] #list-categories .collection-item:hover {
+  background-color: var(--bg-superficie-2) !important;
+  color: var(--texto-superficie) !important;
+}
+
+/* Barra de pesquisa da página de cursos.
+   input[type="search"] no Chrome/Edge usa a aparência nativa do campo de
+   busca do sistema, que pinta o próprio fundo branco por baixo do CSS —
+   "appearance: none" devolve o controle total do fundo para o nosso CSS. */
+html[data-theme="dark"] input.penseead-input[type="search"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--bg-superficie-2) !important;
+  border-color: var(--borda-superficie) !important;
+  color: var(--texto-superficie) !important;
+}
+
+/* Banner de cookies */
+html[data-theme="dark"] .cookie-consent {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--borda-superficie);
+}
+
+html[data-theme="dark"] .cookie-consent__texto strong {
+  color: var(--texto-superficie);
+}
+
+html[data-theme="dark"] .cookie-consent__texto p {
+  color: var(--texto-superficie-suave);
+}
+
+html[data-theme="dark"] .cookie-consent__btn--recusar {
+  color: var(--texto-superficie);
+  border-color: var(--borda-superficie);
+}
+
+html[data-theme="dark"] .cookie-consent__btn--recusar:hover {
+  background-color: var(--bg-superficie-2);
+}
+
+/* Modal de login/cadastro — o painel azul já funciona nos dois temas;
+   aqui só escurecemos o lado do formulário (que era branco). */
+html[data-theme="dark"] .auth-card {
+  background-color: var(--bg-superficie);
+}
+
+html[data-theme="dark"] .auth-form-wrapper {
+  background-color: var(--bg-superficie) !important;
+}
+
+html[data-theme="dark"] .auth-form-inner h2 {
+  color: var(--texto-superficie) !important;
+}
+
+html[data-theme="dark"] .auth-form-sub {
+  color: var(--texto-superficie-suave);
+}
+
+html[data-theme="dark"] .auth-campo label {
+  color: var(--texto-superficie-suave);
+}
+
+html[data-theme="dark"] .auth-campo input {
+  background: var(--bg-superficie-2) !important;
+  border-color: var(--borda-superficie) !important;
+  color: var(--texto-superficie) !important;
+}
+
+html[data-theme="dark"] .auth-campo input:focus {
+  background: var(--bg-superficie-2) !important;
+}
+
+/* Botão de alternância de tema — o ícone muda via JS (dark_mode/light_mode),
+   aqui só um leve giro para dar feedback visual na troca. */
+.botao-tema .material-icons {
+  transition: transform 0.3s ease;
+}
+
+.botao-tema:hover .material-icons {
+  transform: rotate(20deg);
+}

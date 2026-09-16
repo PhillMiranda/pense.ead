@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meus cursos — pense.ead</title>
+  <link rel="stylesheet" href="../css/app.css" />
+</head>
+<body>
+  <div class="container">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h1>Meus cursos</h1>
+      <button class="botao" id="botao-sair">Sair</button>
+    </div>
+
+    <div id="lista-cursos">
+      <p>Carregando seus cursos...</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { exigirLogin, sair } from "../js/auth-guard.js";
+    import { listarMeusCursos } from "../js/api/cursos.js";
+
+    await exigirLogin();
+    document.getElementById("botao-sair").addEventListener("click", sair);
+
+    const container = document.getElementById("lista-cursos");
+    const cursos = await listarMeusCursos();
+
+    if (!cursos.length) {
+      container.innerHTML = `<p>Você ainda não está matriculado em nenhum curso. <a href="../../pages/cursos.html">Ver catálogo</a>.</p>`;
+    } else {
+      container.innerHTML = cursos
+        .map(
+          (curso) => `
+        <a class="card" style="display:block; text-decoration:none; color:inherit;" href="curso.html?slug=${curso.slug}">
+          <h3>${curso.titulo}</h3>
+          <div class="barra-progresso"><div style="width:${curso.progresso}%"></div></div>
+          <p>${curso.progresso}% concluído</p>
+        </a>
+      `
+        )
+        .join("");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entrar — pense.ead</title>
+  <link rel="stylesheet" href="../css/app.css" />
+</head>
+<body>
+  <div class="container" style="max-width: 420px;">
+    <div class="card">
+      <h1>Entrar</h1>
+      <form id="form-login">
+        <input class="campo" type="email" name="email" placeholder="E-mail" required />
+        <input class="campo" type="password" name="senha" placeholder="Senha" required />
+        <p class="erro" id="mensagem-erro" hidden></p>
+        <button class="botao" type="submit">Entrar</button>
+      </form>
+      <p>Não tem conta? <a href="cadastro.html">Cadastre-se</a></p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { supabase } from "../js/supabaseClient.js";
+
+    const form = document.getElementById("form-login");
+    const mensagemErro = document.getElementById("mensagem-erro");
+
+    form.addEventListener("submit", async (evento) => {
+      evento.preventDefault();
+      mensagemErro.hidden = true;
+
+      const dados = new FormData(form);
+      const { error } = await supabase.auth.signInWithPassword({
+        email: dados.get("email"),
+        password: dados.get("senha"),
+      });
+
+      if (error) {
+        mensagemErro.textContent = "E-mail ou senha inválidos.";
+        mensagemErro.hidden = false;
+        return;
+      }
+
+      const params = new URLSearchParams(location.search);
+      location.href = params.get("redirect") || "dashboard.html";
+    });
+  </script>
+</body>
+</html>

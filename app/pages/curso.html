@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curso — pense.ead</title>
+  <link rel="stylesheet" href="../css/app.css" />
+</head>
+<body>
+  <div class="container">
+    <div id="conteudo-curso">
+      <p>Carregando curso...</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { exigirLogin } from "../js/auth-guard.js";
+    import { buscarCursoPorSlug, estaMatriculado, matricularEmCursoGratuito } from "../js/api/cursos.js";
+    import { aulasConcluidas } from "../js/api/progresso.js";
+
+    await exigirLogin();
+
+    const slug = new URLSearchParams(location.search).get("slug");
+    const container = document.getElementById("conteudo-curso");
+    const curso = await buscarCursoPorSlug(slug);
+    const matriculado = await estaMatriculado(curso.id);
+
+    if (!matriculado) {
+      // Curso gratuito: matricula na hora. Curso pago: manda para o checkout (fase 3 do roadmap).
+      if (curso.preco_centavos === 0) {
+        container.innerHTML = `
+          <div class="card">
+            <h1>${curso.titulo}</h1>
+            <p>${curso.descricao ?? ""}</p>
+            <button class="botao" id="botao-matricular">Matricular-se gratuitamente</button>
+          </div>`;
+        document.getElementById("botao-matricular").addEventListener("click", async () => {
+          await matricularEmCursoGratuito(curso.id);
+          location.reload();
+        });
+      } else {
+        container.innerHTML = `
+          <div class="card">
+            <h1>${curso.titulo}</h1>
+            <p>${curso.descricao ?? ""}</p>
+            <p><strong>R$ ${(curso.preco_centavos / 100).toFixed(2)}</strong></p>
+            <!-- TODO fase 3: link para checkout.html assim que o pagamento estiver integrado -->
+            <button class="botao" disabled>Comprar (em breve)</button>
+          </div>`;
+      }
+    } else {
+      const todasAulas = curso.modulos.flatMap((m) => m.aulas);
+      const concluidas = await aulasConcluidas(todasAulas.map((a) => a.id));
+
+      container.innerHTML = `
+        <h1>${curso.titulo}</h1>
+        ${curso.modulos
+          .map(
+            (modulo) => `
+          <div class="card">
+            <h3>${modulo.titulo}</h3>
+            ${modulo.aulas
+              .map(
+                (aula) => `
+              <div class="aula-item ${concluidas.has(aula.id) ? "concluida" : ""}">
+                <a href="aula.html?id=${aula.id}">${aula.titulo}</a>
+                <span>${concluidas.has(aula.id) ? "✔ concluída" : ""}</span>
+              </div>`
+              )
+              .join("")}
+          </div>`
+          )
+          .join("")}
+      `;
+    }
+  </script>
+</body>
+</html>

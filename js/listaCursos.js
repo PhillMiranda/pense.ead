@@ -54,7 +54,7 @@ $(document).ready(function () {
       precoPor: "394,90",
       parcelas: "12",
       valorParcela: "32,91",
-      categoria: ["programacao", "combos-promocionais"],
+      categoria: ["desenvolvimento-profissional", "combos-promocionais"],
     },
     {
       titulo: "Minicurso Programando do Zero!",

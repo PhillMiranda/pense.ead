@@ -271,7 +271,7 @@ p {
 }
 @media (max-width: 600px) {
   .penseead section.public-home .quem-somos .imagem-quem-somos {
-    text-align: left;
+    text-align: justify;
     display: initial;
   }
 }
@@ -281,7 +281,7 @@ p {
 }
 @media (max-width: 600px) {
   .penseead section.public-home .promocional {
-    text-align: left;
+    text-align: justify;
   }
 }
 .penseead section.public-home .promocional .item {
@@ -619,7 +619,7 @@ p {
   .card-margin
   .comment-card
   .comment-text {
-  text-align: left;
+  text-align: justify;
 }
 .penseead .public-courses .pagination li.active,
 .penseead .public-categories .pagination li.active,
