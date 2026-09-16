@@ -632,7 +632,8 @@ html[data-theme="dark"] .courses .course .card .card-content h1,
 html[data-theme="dark"] .courses .course .card .card-content h2,
 html[data-theme="dark"] .courses .course .card .card-content h3,
 html[data-theme="dark"] .courses .course .card .card-content h4,
-html[data-theme="dark"] .courses .course .card .card-content h5 {
+html[data-theme="dark"] .courses .course .card .card-content h5,
+html[data-theme="dark"] .courses .course .card .card-content p {
   color: var(--texto-superficie) !important;
 }
 

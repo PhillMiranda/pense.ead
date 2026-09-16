@@ -2,14 +2,16 @@ $(document).ready(function () {
     
     // 1. Dados dos Banners (Adicione novos objetos aqui)
     const banners = [
-        {
-            img: "/img/banner_principal/banner-penseead-novidades.png",
-            alt: "Novidades chegando para tornar sua jornada ainda mais fácil.",
-            titulo: "", // Deixe vazio se não quiser texto sobre a imagem
-            texto: "",  // Deixe vazio se não quiser texto
-            botaoTexto: "Acesse aqui!",
-            botaoLink: "https://api.whatsapp.com/send/?phone=5521987161707&text&type=phone_number&app_absent=0"
-        },
+        // Adicione banners aqui conforme necessário
+        // Exemplo:
+        // {
+        //     img: "/img/banner_principal/nome-do-banner.png",
+        //     alt: "Descrição do banner",
+        //     titulo: "",
+        //     texto: "",
+        //     botaoTexto: "Acesse aqui!",
+        //     botaoLink: "https://..."
+        // },
         // Exemplo de um segundo banner (pode remover ou editar)
         /*
         {
