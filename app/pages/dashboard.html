@@ -1,47 +1,185 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meus cursos — pense.ead</title>
-  <link rel="stylesheet" href="../css/app.css" />
+  <title>Minha área — pense.ead</title>
+  <link rel="icon" href="../../img/identidade_visual/icone_penseead.svg" type="image/svg+xml" />
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
 </head>
 <body>
-  <div class="container">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h1>Meus cursos</h1>
-      <button class="botao" id="botao-sair">Sair</button>
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__header">
+      <img src="../../img/identidade_visual/icone_penseead.svg" class="sidebar__logo" alt="pense.ead" />
+      <button class="sidebar__fechar" id="sidebar-fechar" aria-label="Fechar menu">
+        <i class="material-icons">close</i>
+      </button>
     </div>
 
-    <div id="lista-cursos">
-      <p>Carregando seus cursos...</p>
+    <div class="sidebar__perfil">
+      <div class="sidebar__avatar" id="avatar-inicial">P</div>
+      <div class="sidebar__perfil-info">
+        <strong id="perfil-nome">Carregando...</strong>
+        <span id="perfil-email"></span>
+      </div>
     </div>
-  </div>
+
+    <nav class="sidebar__nav">
+      <a href="dashboard.html" class="sidebar__link sidebar__link--ativo">
+        <i class="material-icons">dashboard</i> Meus Cursos
+      </a>
+      <a href="certificados.html" class="sidebar__link">
+        <i class="material-icons">workspace_premium</i> Certificados
+      </a>
+      <a href="../../pages/cursos.html" class="sidebar__link">
+        <i class="material-icons">school</i> Catálogo
+      </a>
+      <a href="perfil.html" class="sidebar__link">
+        <i class="material-icons">manage_accounts</i> Meu Perfil
+      </a>
+    </nav>
+
+    <div class="sidebar__rodape">
+      <button class="sidebar__link sidebar__link--sair" id="botao-sair">
+        <i class="material-icons">logout</i> Sair
+      </button>
+    </div>
+  </aside>
+
+  <!-- ============ OVERLAY MOBILE ============ -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- ============ CONTEÚDO PRINCIPAL ============ -->
+  <div class="dashboard">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <button class="topbar__hamburguer" id="sidebar-abrir" aria-label="Abrir menu">
+        <i class="material-icons">menu</i>
+      </button>
+      <h1 class="topbar__titulo">Minha Área</h1>
+      <div class="topbar__acoes">
+        <button class="topbar__btn-tema" id="btn-tema" aria-label="Alternar tema">
+          <i class="material-icons" id="tema-icone">dark_mode</i>
+        </button>
+        <a href="../../pages/cursos.html" class="topbar__btn-catalogo">
+          <i class="material-icons">add</i> Mais cursos
+        </a>
+      </div>
+    </header>
+
+    <!-- Boas-vindas -->
+    <section class="boas-vindas">
+      <div class="boas-vindas__texto">
+        <h2>Olá, <span id="nome-curto">aluno</span>! 👋</h2>
+        <p>Continue de onde parou. Cada aula te aproxima do próximo nível.</p>
+      </div>
+    </section>
+
+    <!-- Cards de cursos -->
+    <section class="secao">
+      <h3 class="secao__titulo">Meus cursos</h3>
+      <div id="lista-cursos" class="grade-cursos">
+        <!-- preenchido pelo JS -->
+        <div class="curso-card curso-card--skeleton"></div>
+        <div class="curso-card curso-card--skeleton"></div>
+      </div>
+    </section>
+
+  </div><!-- /dashboard -->
 
   <script type="module">
     import { exigirLogin, sair } from "../js/auth-guard.js";
     import { listarMeusCursos } from "../js/api/cursos.js";
 
-    await exigirLogin();
+    // ── Tema ──────────────────────────────────────────────────────────────
+    const CHAVE_TEMA = "pense-ead-tema";
+    const html       = document.documentElement;
+    const btnTema    = document.getElementById("btn-tema");
+    const temaIco    = document.getElementById("tema-icone");
+
+    function aplicarTema(t) {
+      if (t === "escuro") html.setAttribute("data-theme", "dark");
+      else html.removeAttribute("data-theme");
+      temaIco.textContent = t === "escuro" ? "light_mode" : "dark_mode";
+      try { localStorage.setItem(CHAVE_TEMA, t); } catch (_) {}
+    }
+
+    aplicarTema(localStorage.getItem(CHAVE_TEMA) || "claro");
+    btnTema.addEventListener("click", () => {
+      aplicarTema(html.getAttribute("data-theme") === "dark" ? "claro" : "escuro");
+    });
+
+    // ── Sidebar mobile ────────────────────────────────────────────────────
+    const sidebar  = document.getElementById("sidebar");
+    const overlay  = document.getElementById("sidebar-overlay");
+    const btnAbrir = document.getElementById("sidebar-abrir");
+    const btnFecha = document.getElementById("sidebar-fechar");
+
+    function abrirSidebar()  { sidebar.classList.add("sidebar--aberta");  overlay.classList.add("ativo"); }
+    function fecharSidebar() { sidebar.classList.remove("sidebar--aberta"); overlay.classList.remove("ativo"); }
+
+    btnAbrir.addEventListener("click", abrirSidebar);
+    btnFecha.addEventListener("click", fecharSidebar);
+    overlay.addEventListener("click", fecharSidebar);
+
+    // ── Auth ──────────────────────────────────────────────────────────────
+    const { usuario, perfil } = await exigirLogin();
+
+    const nome = perfil?.nome || usuario.email.split("@")[0];
+    const nomePartes = nome.split(" ");
+    const nomeCurto  = nomePartes[0];
+    const inicial    = nomeCurto[0].toUpperCase();
+
+    document.getElementById("perfil-nome").textContent  = nome;
+    document.getElementById("perfil-email").textContent = usuario.email;
+    document.getElementById("avatar-inicial").textContent = inicial;
+    document.getElementById("nome-curto").textContent   = nomeCurto;
+
     document.getElementById("botao-sair").addEventListener("click", sair);
 
+    // ── Cursos ────────────────────────────────────────────────────────────
     const container = document.getElementById("lista-cursos");
-    const cursos = await listarMeusCursos();
 
-    if (!cursos.length) {
-      container.innerHTML = `<p>Você ainda não está matriculado em nenhum curso. <a href="../../pages/cursos.html">Ver catálogo</a>.</p>`;
-    } else {
-      container.innerHTML = cursos
-        .map(
-          (curso) => `
-        <a class="card" style="display:block; text-decoration:none; color:inherit;" href="curso.html?slug=${curso.slug}">
-          <h3>${curso.titulo}</h3>
-          <div class="barra-progresso"><div style="width:${curso.progresso}%"></div></div>
-          <p>${curso.progresso}% concluído</p>
-        </a>
-      `
-        )
-        .join("");
+    try {
+      const cursos = await listarMeusCursos();
+      container.innerHTML = "";
+
+      if (!cursos.length) {
+        container.innerHTML = `
+          <div class="estado-vazio">
+            <i class="material-icons">school</i>
+            <p>Você ainda não está matriculado em nenhum curso.</p>
+            <a href="../../pages/cursos.html" class="btn-primario">Ver catálogo</a>
+          </div>`;
+      } else {
+        container.innerHTML = cursos.map(curso => `
+          <a class="curso-card" href="curso.html?slug=${curso.slug}">
+            <div class="curso-card__capa">
+              ${curso.capa_url
+                ? `<img src="${curso.capa_url}" alt="${curso.titulo}" loading="lazy" />`
+                : `<div class="curso-card__capa-placeholder"><i class="material-icons">play_circle</i></div>`}
+              <span class="curso-card__badge">${curso.progresso}%</span>
+            </div>
+            <div class="curso-card__corpo">
+              <h4>${curso.titulo}</h4>
+              <div class="barra-progresso" role="progressbar"
+                   aria-valuenow="${curso.progresso}" aria-valuemin="0" aria-valuemax="100">
+                <div class="barra-progresso__fill" style="width:${curso.progresso}%"></div>
+              </div>
+              <span class="curso-card__label-progresso">
+                ${curso.progresso === 100 ? "✅ Concluído" : curso.progresso === 0 ? "Começar agora" : `${curso.progresso}% concluído`}
+              </span>
+            </div>
+          </a>`).join("");
+      }
+    } catch (erro) {
+      console.error(erro);
+      container.innerHTML = `<p class="erro">Não foi possível carregar seus cursos. Tente novamente.</p>`;
     }
   </script>
 </body>
