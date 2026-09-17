@@ -1,7 +1,5 @@
--- =========================================================
--- Passo 1: Ver o código da trigger que bloqueia
--- Cole APENAS isso primeiro para entender o que ela valida
--- =========================================================
-SELECT prosrc 
+-- Ver código completo das 3 funções handle_new_user
+SELECT pronamespace::regnamespace AS schema, proname, prosrc 
 FROM pg_proc 
-WHERE proname = 'handle_new_user';
+WHERE proname = 'handle_new_user'
+ORDER BY pronamespace::regnamespace;
