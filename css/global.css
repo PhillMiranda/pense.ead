@@ -230,7 +230,7 @@ p {
   background-color: var(--primary-color-light) !important;
 }
 .penseead .page-header .navbar-fixed .menu .nav-wrapper ul.side-nav {
-  background-color: var(--primary-color-dark);
+  background-color: var(--primary-color);
   color: #fff;
 }
 .penseead .page-header .navbar-fixed .menu .nav-wrapper ul.side-nav li a {

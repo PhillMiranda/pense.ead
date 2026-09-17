@@ -753,110 +753,70 @@ html[data-theme="dark"] .auth-campo input:focus {
 
 
 /* =====================================================================
-   Bottom Navigation Bar — mobile
-   Visível apenas em telas ≤ 992px (breakpoint do menu hambúrguer).
+   Bottom Navigation Bar — mobile (só ícones, pill flutuante)
    ===================================================================== */
 
-.bottom-nav {
-  display: none;
-}
+.bottom-nav { display: none; }
 
 @media (max-width: 992px) {
-  body.penseead {
-    padding-bottom: 70px;
-  }
+  body.penseead { padding-bottom: 80px; }
 
   .bottom-nav {
     display: flex;
     position: fixed;
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
-    height: 62px;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 360px;
+    height: 58px;
     z-index: 1000;
-    background: rgba(5, 10, 48, 0.92);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-radius: 20px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    background: #050a30;
+    border-radius: 999px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     align-items: center;
     justify-content: space-around;
-    padding: 0 8px;
+    padding: 0 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  .bottom-nav__item {
+  .bn-item {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex: 1;
-    gap: 3px;
-    color: rgba(255, 255, 255, 0.45);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.4);
     background: transparent;
     border: none;
     cursor: pointer;
     text-decoration: none;
-    font-family: "Titillium Web", sans-serif;
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    padding: 8px 4px;
-    border-radius: 14px;
-    transition: color 0.2s ease, background 0.2s ease;
+    transition: color 0.18s, background 0.18s;
     -webkit-tap-highlight-color: transparent;
-    position: relative;
+    flex-shrink: 0;
   }
 
-  .bottom-nav__item .material-icons {
-    font-size: 1.45rem;
-    line-height: 1;
-    transition: transform 0.18s ease, color 0.18s ease;
+  .bn-item .material-icons {
+    font-size: 1.5rem;
+    transition: transform 0.15s;
   }
 
-  .bottom-nav__item:focus {
-    outline: none;
-  }
+  .bn-item:focus { outline: none; }
 
-  .bottom-nav__item:active .material-icons {
-    transform: scale(0.82);
-  }
+  .bn-item:active .material-icons { transform: scale(0.85); }
 
-  /* Estado ativo — ícone com pill de destaque */
-  .bottom-nav__item--ativo {
-    color: #ffffff;
-  }
+  .bn-item:hover { color: rgba(255, 255, 255, 0.8); }
 
-  .bottom-nav__item--ativo .material-icons {
-    color: var(--secondary-color, #3a9bdc);
-  }
-
-  .bottom-nav__item--ativo::before {
-    content: "";
-    position: absolute;
-    top: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 36px;
-    height: 28px;
+  /* Item ativo */
+  .bn-ativo {
     background: rgba(58, 155, 220, 0.18);
-    border-radius: 10px;
-    z-index: -1;
-  }
-
-  /* Hover / foco */
-  .bottom-nav__item:hover,
-  .bottom-nav__item:focus-visible {
-    color: rgba(255, 255, 255, 0.85);
-  }
-
-  .bottom-nav__item:hover .material-icons {
-    color: rgba(255, 255, 255, 0.85);
-    transform: translateY(-2px);
+    color: #3a9bdc !important;
   }
 
   /* Tema escuro */
   html[data-theme="dark"] .bottom-nav {
-    background: rgba(13, 18, 60, 0.94);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
+    background: #0a1128;
+    border-color: rgba(255, 255, 255, 0.1);
   }
 }
