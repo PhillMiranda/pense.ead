@@ -206,13 +206,25 @@ CREATE TABLE IF NOT EXISTS financeiro.pagamentos (
 -- ---------------------------------------------------------
 -- 6. FKs cruzadas entre schemas (adicionadas após criar tabelas)
 -- ---------------------------------------------------------
-ALTER TABLE pessoas.matriculas
-  ADD CONSTRAINT fk_matriculas_curso
-  FOREIGN KEY (curso_id) REFERENCES ead.cursos(id) ON DELETE CASCADE;
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint WHERE conname = 'fk_matriculas_curso'
+  ) THEN
+    ALTER TABLE pessoas.matriculas
+      ADD CONSTRAINT fk_matriculas_curso
+      FOREIGN KEY (curso_id) REFERENCES ead.cursos(id) ON DELETE CASCADE;
+  END IF;
+END $$;
 
-ALTER TABLE pessoas.progresso_aulas
-  ADD CONSTRAINT fk_progresso_aula
-  FOREIGN KEY (aula_id) REFERENCES ead.aulas(id) ON DELETE CASCADE;
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint WHERE conname = 'fk_progresso_aula'
+  ) THEN
+    ALTER TABLE pessoas.progresso_aulas
+      ADD CONSTRAINT fk_progresso_aula
+      FOREIGN KEY (aula_id) REFERENCES ead.aulas(id) ON DELETE CASCADE;
+  END IF;
+END $$;
 
 -- ---------------------------------------------------------
 -- 7. Row Level Security
@@ -237,12 +249,17 @@ ALTER TABLE financeiro.certificados ENABLE ROW LEVEL SECURITY;
 ALTER TABLE financeiro.pagamentos   ENABLE ROW LEVEL SECURITY;
 
 -- ── pessoas.perfis ────────────────────────────────────────
+DROP POLICY IF EXISTS "perfil_select" ON pessoas.perfis;
+DROP POLICY IF EXISTS "perfil_update" ON pessoas.perfis;
 CREATE POLICY "perfil_select" ON pessoas.perfis
   FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "perfil_update" ON pessoas.perfis
   FOR UPDATE USING (auth.uid() = id);
 
 -- ── ead (catálogo público) ────────────────────────────────
+DROP POLICY IF EXISTS "categorias_public"  ON ead.categorias;
+DROP POLICY IF EXISTS "cursos_publicados"  ON ead.cursos;
+DROP POLICY IF EXISTS "modulos_publicados" ON ead.modulos;
 CREATE POLICY "categorias_public"  ON ead.categorias
   FOR SELECT USING (true);
 CREATE POLICY "cursos_publicados"  ON ead.cursos
@@ -254,6 +271,7 @@ CREATE POLICY "modulos_publicados" ON ead.modulos
   );
 
 -- ── ead.aulas: só matriculados ────────────────────────────
+DROP POLICY IF EXISTS "aulas_matriculados" ON ead.aulas;
 CREATE POLICY "aulas_matriculados" ON ead.aulas
   FOR SELECT USING (
     EXISTS (
@@ -266,6 +284,10 @@ CREATE POLICY "aulas_matriculados" ON ead.aulas
   );
 
 -- ── ead.quizzes: só matriculados ─────────────────────────
+DROP POLICY IF EXISTS "quizzes_matriculados"   ON ead.quizzes;
+DROP POLICY IF EXISTS "perguntas_matriculados" ON ead.quiz_perguntas;
+DROP POLICY IF EXISTS "tentativas_select"      ON ead.quiz_tentativas;
+DROP POLICY IF EXISTS "tentativas_insert"      ON ead.quiz_tentativas;
 CREATE POLICY "quizzes_matriculados" ON ead.quizzes
   FOR SELECT USING (
     EXISTS (
@@ -291,12 +313,17 @@ CREATE POLICY "tentativas_insert" ON ead.quiz_tentativas
   FOR INSERT WITH CHECK (auth.uid() = usuario_id);
 
 -- ── pessoas.matriculas ────────────────────────────────────
+DROP POLICY IF EXISTS "matriculas_select" ON pessoas.matriculas;
+DROP POLICY IF EXISTS "matriculas_insert" ON pessoas.matriculas;
 CREATE POLICY "matriculas_select" ON pessoas.matriculas
   FOR SELECT USING (auth.uid() = usuario_id);
 CREATE POLICY "matriculas_insert" ON pessoas.matriculas
   FOR INSERT WITH CHECK (auth.uid() = usuario_id);
 
 -- ── pessoas.progresso_aulas ───────────────────────────────
+DROP POLICY IF EXISTS "progresso_select" ON pessoas.progresso_aulas;
+DROP POLICY IF EXISTS "progresso_insert" ON pessoas.progresso_aulas;
+DROP POLICY IF EXISTS "progresso_update" ON pessoas.progresso_aulas;
 CREATE POLICY "progresso_select" ON pessoas.progresso_aulas
   FOR SELECT USING (auth.uid() = usuario_id);
 CREATE POLICY "progresso_insert" ON pessoas.progresso_aulas
@@ -305,10 +332,12 @@ CREATE POLICY "progresso_update" ON pessoas.progresso_aulas
   FOR UPDATE USING (auth.uid() = usuario_id);
 
 -- ── financeiro.certificados ───────────────────────────────
+DROP POLICY IF EXISTS "cert_select" ON financeiro.certificados;
 CREATE POLICY "cert_select" ON financeiro.certificados
   FOR SELECT USING (auth.uid() = usuario_id);
 
 -- ── financeiro.pagamentos ─────────────────────────────────
+DROP POLICY IF EXISTS "pgto_select" ON financeiro.pagamentos;
 CREATE POLICY "pgto_select" ON financeiro.pagamentos
   FOR SELECT USING (auth.uid() = usuario_id);
 
