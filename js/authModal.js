@@ -92,19 +92,14 @@
     return base + destino;
   }
 
-  // Carrega o cliente do Supabase sob demanda. Só funciona depois que
-  // app/js/config.js existir (copie de app/js/config.example.js e preencha
-  // com as chaves do seu projeto Supabase) — até lá, os formulários avisam
-  // que a autenticação ainda não está configurada, sem quebrar o resto do site.
+  // Inicializa o cliente Supabase usando jsdelivr (na allowlist da Vercel).
   async function carregarSupabase() {
     try {
-      const modulo = await import(/* @vite-ignore */ caminhoApp("js/supabaseClient.js"));
-      return modulo.supabase;
+      const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm");
+      const cfg = await import(/* @vite-ignore */ caminhoApp("js/config.js"));
+      return createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
     } catch (erro) {
-      console.warn(
-        "Supabase ainda não configurado (app/js/config.js). Copie app/js/config.example.js e preencha as chaves do projeto.",
-        erro
-      );
+      console.warn("Supabase não pôde ser carregado:", erro);
       return null;
     }
   }
