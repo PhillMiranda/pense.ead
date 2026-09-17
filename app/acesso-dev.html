@@ -207,20 +207,28 @@
           password: SUPER_SENHA,
         });
 
-        // Se não existe, cria
-        if (error && error.message.includes("Invalid login credentials")) {
+        // Se falhou por credenciais, tenta criar o usuário
+        if (error) {
           const reg = await supabase.auth.signUp({
             email: SUPER_EMAIL,
             password: SUPER_SENHA,
             options: { data: { nome: "Dev Admin" } },
           });
-          error = reg.error;
-          if (!error) {
+
+          // signUp retornou usuário (pode ser novo ou já existente sem sessão)
+          if (!reg.error && reg.data?.user) {
             const login = await supabase.auth.signInWithPassword({
               email: SUPER_EMAIL, password: SUPER_SENHA,
             });
             data  = login.data;
             error = login.error;
+          } else {
+            // Usuário já existe mas não conseguimos autenticar —
+            // provável que o email ainda não foi confirmado no Supabase
+            throw new Error(
+              "Usuário existe mas não foi possível autenticar. " +
+              "Vá em Authentication → Users → dev@pense.ead.app → ⋮ → Confirm email, depois tente novamente."
+            );
           }
         }
 
