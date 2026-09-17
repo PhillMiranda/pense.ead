@@ -1,6 +1,3 @@
-# Supabase config (cada ambiente tem o seu)
-app/js/config.js
-
 # OS / editor
 .DS_Store
 Thumbs.db
