@@ -6,7 +6,8 @@
   <title>Acesso rápido — pense.ead</title>
   <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: "Titillium Web", sans-serif;
       background: #050a30;
@@ -14,43 +15,101 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 24px;
     }
+
     .card {
       background: #0d1b4b;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px;
-      padding: 40px 36px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 40px 32px;
       width: 100%;
       max-width: 380px;
       text-align: center;
       color: #fff;
     }
-    .card img { height: 48px; margin-bottom: 20px; }
-    .card h1 { font-size: 1.3rem; margin-bottom: 6px; }
-    .card p  { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-bottom: 28px; }
+
+    .card img { height: 52px; margin-bottom: 24px; }
+
+    .card h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
+    .card p  { font-size: 0.88rem; color: rgba(255,255,255,0.5); margin-bottom: 32px; line-height: 1.5; }
+
     .btn {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       width: 100%;
-      padding: 14px;
-      border-radius: 10px;
+      padding: 15px;
+      border-radius: 12px;
       border: none;
       font-family: inherit;
       font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s, transform 0.1s;
     }
-    .btn:hover { opacity: 0.88; }
-    .btn-amarelo { background: #f5c400; color: #050a30; margin-bottom: 10px; }
-    .btn-azul    { background: #3a9bdc; color: #fff; }
-    .status {
-      margin-top: 18px;
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.45);
-      min-height: 20px;
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-amarelo { background: #f5c400; color: #050a30; }
+    .btn-azul    { background: #3a9bdc; color: #fff; margin-top: 10px; }
+
+    /* Spinner */
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(5,10,48,0.3);
+      border-top-color: #050a30;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+      flex-shrink: 0;
     }
-    .status.erro  { color: #ff6b6b; }
-    .status.ok    { color: #4ade80; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Etapas de progresso */
+    .etapas {
+      margin-top: 24px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .etapa {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.4);
+      transition: color 0.3s;
+    }
+
+    .etapa.ativa  { color: rgba(255,255,255,0.9); }
+    .etapa.ok     { color: #4ade80; }
+    .etapa.erro   { color: #f87171; }
+
+    .etapa__icone {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: background 0.3s;
+    }
+
+    .etapa.ativa  .etapa__icone { background: rgba(58,155,220,0.3); color: #3a9bdc; }
+    .etapa.ok     .etapa__icone { background: rgba(74,222,128,0.2); color: #4ade80; }
+    .etapa.erro   .etapa__icone { background: rgba(248,113,113,0.2); color: #f87171; }
+
+    .etapa__spinner {
+      width: 12px; height: 12px;
+      border: 2px solid rgba(58,155,220,0.3);
+      border-top-color: #3a9bdc;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
   </style>
 </head>
 <body>
@@ -59,14 +118,34 @@
     <h1>Acesso Rápido</h1>
     <p>Entre como superusuário para testar o dashboard sem precisar de cadastro.</p>
 
-    <button class="btn btn-amarelo" id="btn-super">
-      Entrar como Superusuário
+    <button class="btn btn-amarelo" id="btn-entrar">
+      <span class="spinner" id="spinner"></span>
+      <span id="btn-texto">Entrar como Superusuário</span>
     </button>
+
     <button class="btn btn-azul" id="btn-dashboard" style="display:none">
       Ir para o Dashboard →
     </button>
 
-    <p class="status" id="status"></p>
+    <!-- Etapas de progresso -->
+    <div class="etapas" id="etapas">
+      <div class="etapa" id="etapa-1">
+        <div class="etapa__icone">1</div>
+        <span>Conectando ao servidor</span>
+      </div>
+      <div class="etapa" id="etapa-2">
+        <div class="etapa__icone">2</div>
+        <span>Verificando usuário</span>
+      </div>
+      <div class="etapa" id="etapa-3">
+        <div class="etapa__icone">3</div>
+        <span>Iniciando sessão</span>
+      </div>
+      <div class="etapa" id="etapa-4">
+        <div class="etapa__icone">4</div>
+        <span>Redirecionando para o dashboard</span>
+      </div>
+    </div>
   </div>
 
   <script type="module">
@@ -78,63 +157,100 @@
     const SUPER_EMAIL = "dev@pense.ead.app";
     const SUPER_SENHA = "PenseEAD@2025!";
 
-    const btnSuper     = document.getElementById("btn-super");
+    const btnEntrar    = document.getElementById("btn-entrar");
     const btnDashboard = document.getElementById("btn-dashboard");
-    const status       = document.getElementById("status");
+    const spinner      = document.getElementById("spinner");
+    const btnTexto     = document.getElementById("btn-texto");
+    const etapasEl     = document.getElementById("etapas");
 
-    function setStatus(msg, tipo = "") {
-      status.textContent = msg;
-      status.className   = "status " + tipo;
+    function setEtapa(n, estado) {
+      const el  = document.getElementById("etapa-" + n);
+      const ico = el.querySelector(".etapa__icone");
+      el.className = "etapa " + estado;
+      if (estado === "ativa") {
+        ico.innerHTML = '<div class="etapa__spinner"></div>';
+      } else if (estado === "ok") {
+        ico.innerHTML = "✓";
+      } else if (estado === "erro") {
+        ico.innerHTML = "✕";
+      } else {
+        ico.textContent = n;
+      }
     }
 
-    // Verifica se já há sessão ativa
+    function pause(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    // Se já há sessão, mostra botão direto
     const { data: { session } } = await supabase.auth.getSession();
     if (session) {
-      setStatus("Sessão ativa: " + session.user.email, "ok");
-      btnDashboard.style.display = "block";
+      btnTexto.textContent = "Sessão ativa — Ir para o Dashboard";
+      btnEntrar.style.display = "none";
+      btnDashboard.style.display = "flex";
     }
 
-    btnSuper.addEventListener("click", async () => {
-      btnSuper.disabled = true;
-      setStatus("Conectando...");
+    btnEntrar.addEventListener("click", async () => {
+      btnEntrar.disabled = true;
+      spinner.style.display = "block";
+      btnTexto.textContent  = "Aguarde...";
+      etapasEl.style.display = "flex";
 
-      // Tenta login direto
-      let { data, error } = await supabase.auth.signInWithPassword({
-        email: SUPER_EMAIL,
-        password: SUPER_SENHA,
-      });
+      try {
+        // Etapa 1 — conectando
+        setEtapa(1, "ativa");
+        await pause(600);
+        setEtapa(1, "ok");
 
-      // Se não existe, cria o usuário
-      if (error && error.message.includes("Invalid login credentials")) {
-        setStatus("Criando superusuário...");
-        const reg = await supabase.auth.signUp({
+        // Etapa 2 — verificando usuário (tenta login)
+        setEtapa(2, "ativa");
+        let { data, error } = await supabase.auth.signInWithPassword({
           email: SUPER_EMAIL,
           password: SUPER_SENHA,
-          options: { data: { nome: "Dev Admin" } },
         });
-        data  = reg.data;
-        error = reg.error;
 
-        if (!error) {
-          // Faz login após cadastro
-          const login = await supabase.auth.signInWithPassword({
+        // Se não existe, cria
+        if (error && error.message.includes("Invalid login credentials")) {
+          const reg = await supabase.auth.signUp({
             email: SUPER_EMAIL,
             password: SUPER_SENHA,
+            options: { data: { nome: "Dev Admin" } },
           });
-          data  = login.data;
-          error = login.error;
+          error = reg.error;
+          if (!error) {
+            const login = await supabase.auth.signInWithPassword({
+              email: SUPER_EMAIL, password: SUPER_SENHA,
+            });
+            data  = login.data;
+            error = login.error;
+          }
         }
-      }
 
-      if (error) {
-        setStatus("Erro: " + error.message, "erro");
-        btnSuper.disabled = false;
-        return;
-      }
+        if (error) throw error;
+        setEtapa(2, "ok");
 
-      setStatus("Logado como " + data.user.email, "ok");
-      btnDashboard.style.display = "block";
-      btnSuper.style.display     = "none";
+        // Etapa 3 — sessão iniciada
+        setEtapa(3, "ativa");
+        await pause(500);
+        setEtapa(3, "ok");
+
+        // Etapa 4 — redireciona
+        setEtapa(4, "ativa");
+        await pause(700);
+        setEtapa(4, "ok");
+
+        btnTexto.textContent = "Sessão iniciada!";
+        spinner.style.display = "none";
+
+        await pause(400);
+        location.href = "pages/dashboard.html";
+
+      } catch (err) {
+        // Mostra o erro na etapa que falhou
+        const etapaAtual = document.querySelector(".etapa.ativa");
+        if (etapaAtual) etapaAtual.className = "etapa erro";
+        spinner.style.display = "none";
+        btnTexto.textContent  = "Erro: " + (err.message || "tente novamente");
+        btnEntrar.disabled    = false;
+      }
     });
 
     btnDashboard.addEventListener("click", () => {
